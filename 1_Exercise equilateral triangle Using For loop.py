@@ -1,15 +1,13 @@
-n = 5  # height of the triangle
+n = 5  
 
 for i in range(1, n + 1):
-    # build spaces
-    spaces = ""
+
+    spaces = "" # this i do it by iterate the number of spaces before we append the stars. 
     for _ in range(n - i):
         spaces += " "
 
-    # build stars
-    stars = ""
+    stars = ""   
     for _ in range(2 * i - 1):
         stars += "*"
 
-    # print each line
     print(spaces + stars)
