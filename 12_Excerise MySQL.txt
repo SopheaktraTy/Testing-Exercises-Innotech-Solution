@@ -1,0 +1,55 @@
+
+******Exercise1*******
+CREATE TABLE staffs (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    sex ENUM('M','F') NOT NULL,
+    date_of_birth DATE NOT NULL,
+    address VARCHAR(255),
+    phone VARCHAR(20)
+);
+
+CREATE TABLE positions (
+    id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    staff_id INT UNSIGNED NOT NULL,
+    position VARCHAR(100) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NULL,
+    FOREIGN KEY (staff_id) REFERENCES staffs(id)
+);
+
+
+******Exercise2*******
+SELECT 
+    s.id AS `Staff ID`,
+    s.name AS `Name`,
+    s.sex AS `Sex`,
+    s.date_of_birth AS `Date of Birth`,
+    s.address AS `Address`,
+    s.phone AS `Phone`,
+    p.position AS `Current Position`
+FROM staffs s
+LEFT JOIN positions p
+    ON s.id = p.staff_id
+    AND p.end_date IS NULL;
+
+
+******Exercise3*******
+SELECT 
+    s.id AS `Staff ID`,
+    s.name AS `Name`,
+    s.sex AS `Sex`,
+    s.date_of_birth AS `Date of Birth`,
+    s.address AS `Address`,
+    s.phone AS `Phone`,
+    p.position AS `Current Position`
+FROM staffs s
+JOIN positions p 
+    ON s.id = p.staff_id
+    AND p.end_date IS NULL   -- current position only
+WHERE (
+    TIMESTAMPDIFF(YEAR,
+        (SELECT MIN(start_date) FROM positions WHERE staff_id = s.id),
+        CURDATE()
+    ) > 5
+);
